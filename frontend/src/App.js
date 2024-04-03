@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import UserList from "./compenents/UserList";
-import AddUser from "./compenents/AddUser";
-
+import UserList from "./components/UserList";
+import AddUser from "./components/AddUser";
+import EditUser from "./components/EditUser";
 
 const App = () => {
   return (
@@ -11,6 +11,8 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={UserList} />
           <Route path="/add-user" component={AddUser} />
+          <Route path="/edit-user/:id" component={EditUser} />{" "}
+          {/* Adiciona o parâmetro de rota dinâmico */}
         </Switch>
       </div>
     </Router>

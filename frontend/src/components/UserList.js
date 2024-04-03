@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Importa o Link para a navegação
-import "./UserList.css"; // Importa o arquivo CSS para estilização
+import { Link, useHistory } from "react-router-dom";
+import "./UserList.css";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
+  const history = useHistory();
+
 
   useEffect(() => {
-    // Função para obter a lista de usuários
     const fetchUsers = async () => {
       try {
         const response = await axios.get("http://localhost:8080/users");
@@ -17,27 +18,39 @@ const UserList = () => {
       }
     };
 
-    // Chama a função para obter os usuários ao montar o componente
     fetchUsers();
-  }, []); // O array vazio [] como segundo parâmetro indica que o efeito só será executado uma vez, após a montagem do componente
+  }, []);
 
   // Função para atualizar um usuário
-  const updateUser = (id) => {
-    console.log("Atualizar usuário com ID:", id);
-    // Implemente a lógica para atualizar o usuário aqui
+  const updateUser = async (id) => {
+    try {
+      // Redireciona para a página de edição com o ID do usuário como parâmetro
+      history.push(`/edit-user/${id}`);
+    } catch (error) {
+      console.error("Erro ao atualizar usuário:", error);
+    }
   };
 
+
   // Função para deletar um usuário
-  const deleteUser = (id) => {
-    console.log("Deletar usuário com ID:", id);
-    // Implemente a lógica para deletar o usuário aqui
+  const deleteUser = async (id) => {
+    try {
+      // Implemente a lógica para deletar o usuário aqui
+      console.log("Deletar usuário com ID:", id);
+      // Por exemplo, você pode enviar uma requisição DELETE para o backend
+      // com o ID do usuário a ser deletado
+      // Aguardando a implementação da API no backend
+    } catch (error) {
+      console.error("Erro ao deletar usuário:", error);
+    }
   };
 
   return (
     <div>
       <h2>Lista de Usuários</h2>
-      <Link to="/add-user">Adicionar Usuário</Link>{" "}
-      {/* Adiciona o link para a página de adicionar usuários */}
+      <Link to="/add-user">
+        <button> + Adicionar Usuário</button>
+      </Link>{" "}
       <table className="user-table">
         <thead>
           <tr>

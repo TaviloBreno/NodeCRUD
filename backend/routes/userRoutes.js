@@ -1,22 +1,14 @@
-// backend/routes/userRoutes.js
+// routes/userRoutes.js
 
 const express = require("express");
 const router = express.Router();
-const connection = require("../config/mysql");
+const UserController = require("../controllers/userController");
 
-// Rota para obter todos os usuários
-router.get("/", (req, res) => {
-  const sql = "SELECT * FROM users";
-  connection.query(sql, (error, results) => {
-    if (error) {
-      console.error("Erro ao obter todos os usuários:", error);
-      res.status(500).json({ error: "Erro ao obter todos os usuários" });
-      return;
-    }
-    res.json(results);
-  });
-});
-
-// Outras rotas CRUD para criar, atualizar e excluir usuários
+// Rotas para manipulação de usuários
+router.post("/", UserController.createUser);
+router.get("/", UserController.getAllUsers);
+router.get("/:id", UserController.getUserById);
+router.put("/:id", UserController.updateUser); // Aqui está a correção
+router.delete("/:id", UserController.deleteUser);
 
 module.exports = router;

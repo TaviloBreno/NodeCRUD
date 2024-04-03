@@ -7,7 +7,6 @@ const UserList = () => {
   const [users, setUsers] = useState([]);
   const history = useHistory();
 
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -21,36 +20,25 @@ const UserList = () => {
     fetchUsers();
   }, []);
 
-  // Função para atualizar um usuário
-  const updateUser = async (id) => {
-    try {
-      // Redireciona para a página de edição com o ID do usuário como parâmetro
-      history.push(`/edit-user/${id}`);
-    } catch (error) {
-      console.error("Erro ao atualizar usuário:", error);
-    }
-  };
-
-
-  // Função para deletar um usuário
-  const deleteUser = async (id) => {
-    try {
-      // Implemente a lógica para deletar o usuário aqui
-      console.log("Deletar usuário com ID:", id);
-      // Por exemplo, você pode enviar uma requisição DELETE para o backend
-      // com o ID do usuário a ser deletado
-      // Aguardando a implementação da API no backend
-    } catch (error) {
-      console.error("Erro ao deletar usuário:", error);
+  const handleDelete = async (id, name) => {
+    const confirmDelete = window.confirm(
+      `Você tem certeza de que quer deletar ${name}?`
+    );
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:8080/users/${id}`);
+        setUsers(users.filter((user) => user.id !== id));
+        console.log(`Usuário com ID ${id} deletado com sucesso.`);
+      } catch (error) {
+        console.error(`Erro ao deletar usuário com ID ${id}:`, error);
+      }
     }
   };
 
   return (
     <div>
       <h2>Lista de Usuários</h2>
-      <Link to="/add-user">
-        <button> + Adicionar Usuário</button>
-      </Link>{" "}
+      <Link to="/add-user">Adicionar Usuário</Link>{" "}
       <table className="user-table">
         <thead>
           <tr>
@@ -69,8 +57,12 @@ const UserList = () => {
               <td>{user.email}</td>
               <td>{user.age}</td>
               <td>
-                <button onClick={() => updateUser(user.id)}>Atualizar</button>
-                <button onClick={() => deleteUser(user.id)}>Deletar</button>
+                <button onClick={() => history.push(`/edit-user/${user.id}`)}>
+                  Editar
+                </button>
+                <button onClick={() => handleDelete(user.id, user.name)}>
+                  Deletar
+                </button>
               </td>
             </tr>
           ))}

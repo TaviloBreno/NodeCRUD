@@ -12,7 +12,6 @@ const App = () => {
           <Route path="/" exact component={UserList} />
           <Route path="/add-user" component={AddUser} />
           <Route path="/edit-user/:id" component={EditUser} />{" "}
-          {/* Adiciona o parâmetro de rota dinâmico */}
         </Switch>
       </div>
     </Router>
